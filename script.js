@@ -46,10 +46,8 @@ function autoSetForm() {
 		setPeriodLength = getCookie("setPeriodLength");
 		setBreakLength = getCookie("setBreakLength");
 
-	    var periodLength = document.getElementById(periodLength);
-	    periodLength.value = setPeriodLength;
-	    var breakLength = document.getElementById(breakLength);
-	    breakLength.value = setBreakLength;
+	    document.getElementById("periodLength").value = setPeriodLength;
+	    document.getElementById("breakLength").value = setBreakLength;
 	}
 }
 
