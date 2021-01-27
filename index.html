@@ -11,21 +11,19 @@
 	<title>What period is it? 今は何時限ですか？</title>
 
 	<style>
-		html, body, body>.container {
+		html, body {
 			min-height: 100vh;
 		}
 		.card.past-slot *, .card.future-slot * {
 			font-size: 0.95rem !important;
 		}
-		@media (max-width: 991.98px) {
-			.card-body {
-				padding: 0.5rem;
-			}
+		.card.past-slot .card-body, .card.future-slot .card-body {
+			padding: 0.75rem;
 		}
 	</style>
 </head>
-<body>
-	<div class="container d-flex flex-column justify-content-center">
+<body class="d-flex flex-column py-4">
+	<section class="container flex-fill justify-content-center">
 		<div class="row">
 			<div class="col text-center">
 				<h1>What period is it? <br class="d-md-none">今は何時限ですか？</h1>
@@ -37,19 +35,19 @@
 			</div>
 		</div>
 		<div class="row justify-content-center my-3">
-			<div class="col-md-6 text-center">
-				<div class="row">
+			<div class="col-md-10 col-xl-6 text-center">
+				<div class="row g-0">
 					<div class="col-6">
-						<label for="periodLength">Period length: </label>
-						<select id="periodLength" onchange="setPeriodBreakLengths();">
-							<option value="40">40 minutes</option>
+						<label for="periodLength" class="align-middle">Period length: </label>
+						<select id="periodLength" class="form-select text-center d-inline-block w-50 mx-1" onchange="setPeriodBreakLengths();">
+							<option value="30">40 minutes</option>
 							<option value="45">45 minutes</option>
 							<option value="50" selected="selected">50 minutes</option>
 						</select>
 					</div>
 					<div class="col-6">
-						<label for="periodLength">Break length: </label>
-						<select id="breakLength" onchange="setPeriodBreakLengths();">
+						<label for="breakLength" class="align-middle">Break length: </label>
+						<select id="breakLength" class="form-select text-center d-inline-block w-50 mx-1" onchange="setPeriodBreakLengths();">
 							<option value="10" selected="selected">10 minutes</option>
 							<option value="15">15 minutes</option>
 						</select>
@@ -69,34 +67,7 @@
 				<p class="w-100" id="output">TIMETABLE</p>
 			</div>
 		</div>
-
-<!-- 		<div class="row justify-content-center text-center">
-			<div class="col-md-6">
-				<div class="card mb-1 bg-success text-white">
-					<div class="row g-0 bg-gradient">
-						<div class="col-md-6">
-							<div class="card-body">
-								<h2 class="m-0 fs-6">TESTING</h2></div>
-							</div>
-							<div class="col-md-6">
-								<div class="card-body">
-									<p class="card-text">12:15 ~ 13:00</p>
-								</div>
-							</div>
-						</div>
-						<div class="row g-0 card-footer bg-light text-success">
-							<div class="col-md-6">
-								<p class="m-0">Since start: <span id="elapsedTime">06 minutes</span></p>
-							</div>
-							<div class="col-md-6">
-								<p class="m-0">Till end: <span id="remainingTime">39 minutes</span></p>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	-->
+	</section>
 	<section class="footer text-center">
 		<small class="d-block">Made with Github Pages - 
 			<a href="https://github.com/rbccaao/timetable-ticker/">View on Github<i class="fab fa-github-square"></i></a>
