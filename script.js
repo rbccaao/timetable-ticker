@@ -78,6 +78,9 @@ function importPeriodBreakLengths() {
 
 	    document.getElementById("periodLength").value = setPeriodLength;
 	    document.getElementById("breakLength").value = setBreakLength;
+	} else {
+		var initialSetupModal = new bootstrap.Modal(document.getElementById("initialSetupModal"));
+		initialSetupModal.show();
 	}
 }
 
@@ -87,6 +90,22 @@ function setPeriodBreakLengths() {
 
 	var selectBreakLength = document.getElementById("breakLength");
 	setBreakLength = selectBreakLength.options[selectBreakLength.selectedIndex].value;
+	setCookies();
+	createSchedule();
+	printSchedule();
+}
+
+function setModalPeriodBreakLengths() {
+	console.log("modal values changed");
+	var selectModalPeriodLength = document.getElementById("modalPeriodLength");
+	setPeriodLength = selectModalPeriodLength.options[selectModalPeriodLength.selectedIndex].value;
+
+	var selectModalBreakLength = document.getElementById("modalbreakLength");
+	setBreakLength = selectModalBreakLength.options[selectModalBreakLength.selectedIndex].value;
+
+    document.getElementById("periodLength").value = setPeriodLength;
+    document.getElementById("breakLength").value = setBreakLength;
+
 	setCookies();
 	createSchedule();
 	printSchedule();
@@ -206,7 +225,7 @@ function printSchedule() {
 	var now = moment();
 
 	//time debugger
-	// var now = moment({hour: 8, minute: 45});
+	// var now = moment({hour: 9, minute: 30});
 
 	if (now.isBefore(morningHomeroom)) {
 		pastSlot = false;
