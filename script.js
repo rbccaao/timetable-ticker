@@ -9,7 +9,7 @@ var weekdayItems = ["Homeroom - 朝礼","Period 1 - １時限","Break","Period 2
 var weekendItems = ["Homeroom - 朝礼","Period 1 - １時限","Break","Period 2 - ２時限","Break","Period 3 - ３時限","Break","Period 4 - ４時限","Afternoon Homeroom - 終礼","Cleaning - 掃除","End of school"]
 
 var schedule = [];
-var morningHomeroom = moment({hour: 8, minute: 25});
+var morningHomeroom;
 
 var currentItem;
 var weekdayOrEnd;
@@ -26,10 +26,14 @@ document.addEventListener('DOMContentLoaded', function () {
 
 setInterval(function() {
 	printCurrentTime();
+
+	// Time debugger
+	// var temp = moment().subtract(30, 'minutes');
+
 	// Update timetable only during school timing
 	if (moment().isBetween(schedule[0]["startTime"], schedule[schedule.length-1]["endTime"])) {
-		// Current period/break has ended, roll into next slot
-		if (moment().isSameOrAfter(currentItem["endTime"])) {
+		// Trigger on day start. Current period/break has ended, roll into next slot. 
+		if (currentItem == null || moment().isSameOrAfter(currentItem["endTime"])) {
 			printSchedule();
 		}
 		printCurrentProgress();
@@ -96,7 +100,6 @@ function setPeriodBreakLengths() {
 }
 
 function setModalPeriodBreakLengths() {
-	console.log("modal values changed");
 	var selectModalPeriodLength = document.getElementById("modalPeriodLength");
 	setPeriodLength = selectModalPeriodLength.options[selectModalPeriodLength.selectedIndex].value;
 
@@ -158,6 +161,7 @@ function createSchedule() {
 	}
 
 	schedule.length = 0;
+	morningHomeroom = moment({hour: 8, minute: 25});
 
 	schedule.push({
 		"name": dayItems[0],
@@ -225,6 +229,7 @@ function printSchedule() {
 	var now = moment();
 
 	//time debugger
+	// var now = moment().subtract(30, 'minutes');
 	// var now = moment({hour: 9, minute: 30});
 
 	if (now.isBefore(morningHomeroom)) {
