@@ -17,25 +17,50 @@ var weekdayOrEnd;
 moment.relativeTimeThreshold('m', 60*24*30*12);
 
 document.addEventListener('DOMContentLoaded', function () {
-	autoSetForm();
-	console.log(document.cookie);
-
+	importPeriodBreakLengths();
+	setPeriodBreakLengths();
 	printCurrentTime();
-	calculateIt();
+	printSchedule();
 	console.log("ready!");
 });
 
 setInterval(function() {
 	printCurrentTime();
+	// Update timetable only during school timing
 	if (moment().isBetween(schedule[0]["startTime"], schedule[schedule.length-1]["endTime"])) {
+		// Current period/break has ended, roll into next slot
 		if (moment().isSameOrAfter(currentItem["endTime"])) {
-			calculateIt();
+			printSchedule();
 		}
-		printItemTimes();
+		printCurrentProgress();
 	}
 }, 1000); 
 
-function autoSetForm() {
+function setCookies() {
+	var expiryDate = new Date();
+	expiryDate.setMonth(expiryDate.getMonth() + 1);
+
+	document.cookie = "setPeriodLength=" + setPeriodLength + "; expires=" + expiryDate;
+	document.cookie = "setBreakLength=" + setBreakLength + "; expires=" + expiryDate;
+}
+
+function getCookie(cname) {
+	var name = cname + "=";
+	var decodedCookie = decodeURIComponent(document.cookie);
+	var ca = decodedCookie.split(';');
+	for(var i = 0; i <ca.length; i++) {
+		var c = ca[i];
+		while (c.charAt(0) == ' ') {
+			c = c.substring(1);
+		}
+		if (c.indexOf(name) == 0) {
+			return c.substring(name.length, c.length);
+		}
+	}
+	return "";
+}
+
+function importPeriodBreakLengths() {
 	if (moment().days() > 0 && moment().days() < 6) {
 		weekdayOrEnd = 'weekday';
 	} else {
@@ -49,6 +74,16 @@ function autoSetForm() {
 	    document.getElementById("periodLength").value = setPeriodLength;
 	    document.getElementById("breakLength").value = setBreakLength;
 	}
+}
+
+function setPeriodBreakLengths() {
+	var selectPeriodLength = document.getElementById("periodLength");
+	setPeriodLength = selectPeriodLength.options[selectPeriodLength.selectedIndex].value;
+
+	var selectBreakLength = document.getElementById("breakLength");
+	setBreakLength = selectBreakLength.options[selectBreakLength.selectedIndex].value;
+	setCookies();
+	createSchedule();
 }
 
 function printCurrentTime() {
@@ -88,57 +123,6 @@ function getJpDay() {
 		break;
 	}
 	return "(" + jp + ")";
-}
-
-function printItemTimes() {
-	var elapsedTime = document.getElementById("elapsedTime");
-	elapsedTime.innerHTML = currentItem["startTime"].fromNow(true);
-
-	var remainingTime = document.getElementById("remainingTime");
-	remainingTime.innerHTML = currentItem["endTime"].fromNow(true);
-
-	var milliCurrent = moment().unix();
-	var milliStart = currentItem["startTime"].unix();
-	var milliEnd = currentItem["endTime"].unix();
-	var percent = ((milliCurrent - milliStart) / (milliEnd - milliStart)) * 100;
-
-	var progressBar = document.getElementById("progressBar");
-	progressBar.style.width = percent+"%";
-}
-
-function calculateIt() {
-	var selectPeriodLength = document.getElementById("periodLength");
-	setPeriodLength = selectPeriodLength.options[selectPeriodLength.selectedIndex].value;
-
-	var selectBreakLength = document.getElementById("breakLength");
-	setBreakLength = selectBreakLength.options[selectBreakLength.selectedIndex].value;
-	setCookies();
-	createSchedule();
-	printSchedule();
-}
-
-function setCookies() {
-	var expiryDate = new Date();
-	expiryDate.setMonth(expiryDate.getMonth() + 1);
-
-	document.cookie = "setPeriodLength=" + setPeriodLength + "; expires=" + expiryDate;
-	document.cookie = "setBreakLength=" + setBreakLength + "; expires=" + expiryDate;
-}
-
-function getCookie(cname) {
-	var name = cname + "=";
-	var decodedCookie = decodeURIComponent(document.cookie);
-	var ca = decodedCookie.split(';');
-	for(var i = 0; i <ca.length; i++) {
-		var c = ca[i];
-		while (c.charAt(0) == ' ') {
-			c = c.substring(1);
-		}
-		if (c.indexOf(name) == 0) {
-			return c.substring(name.length, c.length);
-		}
-	}
-	return "";
 }
 
 function createSchedule() {
@@ -255,6 +239,7 @@ function printSchedule() {
 			}
 		}
 
+		//current slot countdown details
 		if (currentSlot) {
 			currentItem = schedule[i];
 			if (!item["name"].includes("Break")) {
@@ -282,6 +267,7 @@ function printSchedule() {
 		currentSlot = false;
 	}
 
+	//end of school
 	var lastItem = schedule[schedule.length-1];
 	if (pastSlot) {
 		result = '<div class="card mb-1 bg-warning">';
@@ -295,6 +281,22 @@ function printSchedule() {
 	totalResult += result;
 
 	output.innerHTML = totalResult;
+}
+
+function printCurrentProgress() {
+	var elapsedTime = document.getElementById("elapsedTime");
+	elapsedTime.innerHTML = currentItem["startTime"].fromNow(true);
+
+	var remainingTime = document.getElementById("remainingTime");
+	remainingTime.innerHTML = currentItem["endTime"].fromNow(true);
+
+	var milliCurrent = moment().unix();
+	var milliStart = currentItem["startTime"].unix();
+	var milliEnd = currentItem["endTime"].unix();
+	var percent = ((milliCurrent - milliStart) / (milliEnd - milliStart)) * 100;
+
+	var progressBar = document.getElementById("progressBar");
+	progressBar.style.width = percent+"%";
 }
 
 function testing() {

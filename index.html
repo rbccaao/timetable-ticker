@@ -41,7 +41,7 @@
 				<div class="row">
 					<div class="col-6">
 						<label for="periodLength">Period length: </label>
-						<select id="periodLength" onchange="calculateIt();">
+						<select id="periodLength" onchange="setPeriodBreakLengths();">
 							<option value="40">40 minutes</option>
 							<option value="45">45 minutes</option>
 							<option value="50" selected="selected">50 minutes</option>
@@ -49,14 +49,14 @@
 					</div>
 					<div class="col-6">
 						<label for="periodLength">Break length: </label>
-						<select id="breakLength" onchange="calculateIt();">
+						<select id="breakLength" onchange="setPeriodBreakLengths();">
 							<option value="10" selected="selected">10 minutes</option>
 							<option value="15">15 minutes</option>
 						</select>
 					</div>
 					<!-- <div class="col-md-4">
 						<label for="periodLength">Club: </label>
-						<select id="breakLength" onchange="calculateIt();">
+						<select id="breakLength" onchange="setPeriodBreakLengths();">
 							<option value="10" selected="selected">Yes</option>
 							<option value="15">No</option>
 						</select>
