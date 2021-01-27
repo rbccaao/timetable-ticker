@@ -34,6 +34,11 @@ setInterval(function() {
 		}
 		printCurrentProgress();
 	}
+	// Reset schedule for new day
+	if (moment().isAfter(schedule[0]["startTime"], 'day')) {
+		createSchedule();
+		printSchedule();
+	}
 }, 1000); 
 
 function setCookies() {
@@ -84,6 +89,7 @@ function setPeriodBreakLengths() {
 	setBreakLength = selectBreakLength.options[selectBreakLength.selectedIndex].value;
 	setCookies();
 	createSchedule();
+	printSchedule();
 }
 
 function printCurrentTime() {
