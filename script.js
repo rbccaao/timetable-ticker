@@ -254,15 +254,15 @@ function printSchedule() {
 			}
 
 			result += '<div class="row g-0 "><div class="col-6"><div class="card-body">';
-			result += '<h2 class="m-0 fs-6">'+ item["name"] + '</h2>';
+			result += '<h2 class="m-0 fs-6 d-inline">'+ item["name"] + '</h2>';
 			result += '</div></div><div class="col-6"><div class="card-body"><p class="card-text">';
 			result += item["startTime"].format('HH:mm') + " ~ " + item["endTime"].format('HH:mm') + '</p>';
 			result += '</div></div></div>';
 		} else { //break
 			if (currentSlot) {
-				result += '<div class="card mb-1">';
+				result += '<div class="card mb-1 bg-primary bg-gradient text-white">';
 				result += '<div class="row g-0">';
-				result += '<div class="col"><div class="card-body bg-info text-white">';
+				result += '<div class="col"><div class="card-body">';
 				result += '<p class="m-0 fs-6">'+ item["name"] + '</p>';
 				result += '</div></div></div>';
 				pastSlot = false;
@@ -275,7 +275,7 @@ function printSchedule() {
 			if (!item["name"].includes("Break")) {
 				result += '<div class="row g-0 card-footer bg-light text-success">';
 			} else {
-				result += '<div class="row g-0 card-footer bg-light text-info">';
+				result += '<div class="row g-0 card-footer bg-light text-primary">';
 			}
 			result += '<div class="col-6">';
 			result += '<p class="m-0">Since start: <span id="elapsedTime">00:00:00</span></p>'
@@ -287,7 +287,7 @@ function printSchedule() {
 			if (!item["name"].includes("Break")) {
 				result += '<div id="progressBar" class="progress-bar bg-success" style="width: 0%" role="progressbar"></div>';
 			} else {
-				result += '<div id="progressBar" class="progress-bar bg-info" style="width: 0%" role="progressbar"></div>';
+				result += '<div id="progressBar" class="progress-bar bg-primary" style="width: 0%" role="progressbar"></div>';
 			}
 			result += '</div></div>';
 		}
