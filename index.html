@@ -21,6 +21,9 @@
 		.card.past-slot .card-body, .card.future-slot .card-body {
 			padding: 0.75rem;
 		}
+		.card-footer {
+			background-color: transparent;
+		}
 		#feedback-button {
 			height: 3rem; 
 			width: 3rem;
@@ -51,7 +54,7 @@
 					<div class="col-6">
 						<label for="periodLength" class="align-middle">Period length: </label>
 						<select id="periodLength" class="form-select text-center d-inline-block w-50 mx-1" onchange="setPeriodBreakLengths();">
-							<option value="30">40 minutes</option>
+							<option value="40">40 minutes</option>
 							<option value="45">45 minutes</option>
 							<option value="50" selected="selected">50 minutes</option>
 						</select>
