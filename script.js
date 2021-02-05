@@ -303,7 +303,7 @@ function printSchedule() {
 		result = '<div class="card mb-1 bg-warning">';
 		currentItem = null;
 	} else {
-		result = '<div class="card mb-1 bg-white">';
+		result = '<div class="card mb-1 bg-light">';
 	}
 	result += '<div class="row g-0"><div class="col"><div class="card-body">';
 	result += '<h2 class="m-0 fs-6">'+ lastItem["name"] + '</h2>';
