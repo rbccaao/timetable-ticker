@@ -23,6 +23,9 @@
 		html, body {
 			min-height: 100vh;
 		}
+		body>section.flex-fill {
+			flex-grow: 0.8;
+		}
 		.card.past-slot *, .card.future-slot * {
 			font-size: 0.95rem !important;
 		}
@@ -60,18 +63,18 @@
 			<div class="col-md-10 col-xl-6 text-center">
 				<div class="row g-0">
 					<div class="col-6">
-						<label for="periodLength" class="align-middle">Period length: </label>
+						<label for="periodLength" class="align-middle">Period length<br>授業時間</label>
 						<select id="periodLength" class="form-select text-center d-inline-block w-50 mx-1" onchange="setPeriodBreakLengths();">
-							<option value="40">40 minutes</option>
-							<option value="45">45 minutes</option>
-							<option value="50" selected="selected">50 minutes</option>
+							<option value="40">40 minutes 分</option>
+							<option value="45">45 minutes 分</option>
+							<option value="50" selected="selected">50 minutes 分</option>
 						</select>
 					</div>
 					<div class="col-6">
-						<label for="breakLength" class="align-middle">Break length: </label>
+						<label for="breakLength" class="align-middle">Break length<br>休み時間</label>
 						<select id="breakLength" class="form-select text-center d-inline-block w-50 mx-1" onchange="setPeriodBreakLengths();">
-							<option value="10" selected="selected">10 minutes</option>
-							<option value="15">15 minutes</option>
+							<option value="10" selected="selected">10 minutes 分</option>
+							<option value="15">15 minutes 分</option>
 						</select>
 					</div>
 					<!-- <div class="col-md-4">
@@ -107,35 +110,36 @@
 	  <div class="modal-dialog">
 	    <div class="modal-content">
 	      <div class="modal-header">
-	        <h5 class="modal-title" id="initialSetupModalLabel">Welcome to the Timetable Ticker!</h5>
+	        <h5 class="modal-title" id="initialSetupModalLabel">Welcome to the Timetable Ticker!<br>日課ティッカーへようこそ！</h5>
 	        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 	      </div>
 	      <div class="modal-body">
 	        <p>Please set the current period length and break length. The page will use cookies to save your settings. The cookies are completely harmless.</p>
+	        <p>授業時間と休み時間を設定してください。このページはクッキーを使って設定を保存します。このクッキーは他の目的を利用されません。</p>
 	        <div class="row justify-content-center py-2">
 				<div class="col-4 d-flex align-items-center">
-					<label for="modalPeriodLength">Period length: </label>
+					<label for="modalPeriodLength">Period length<br>授業時間: </label>
 				</div>
 				<div class="col-6">
 					<select id="modalPeriodLength" class="form-select text-center d-inline-block mx-1">
-						<option value="30">40 minutes</option>
-						<option value="45">45 minutes</option>
-						<option value="50" selected="selected">50 minutes</option>
+						<option value="30">40 minutes 分</option>
+						<option value="45">45 minutes 分</option>
+						<option value="50" selected="selected">50 minutes 分</option>
 					</select>
 				</div>
 			</div>
-	        <div class="row justify-content-center py-2">
+	        <div class="row justify-content-center py-2 mb-4">
 				<div class="col-4 d-flex align-items-center">
-					<label for="modalbreakLength">Break length: </label>
+					<label for="modalbreakLength">Break length<br>休み時間: </label>
 				</div>
 				<div class="col-6">
 					<select id="modalbreakLength" class="form-select text-center d-inline-block mx-1">
-						<option value="10" selected="selected">10 minutes</option>
-						<option value="15">15 minutes</option>
+						<option value="10" selected="selected">10 minutes 分</option>
+						<option value="15">15 minutes 分</option>
 					</select>
 				</div>
 			</div>
-			<p class="small pt-3">If you have any comments or feedback, please follow the link to the form by using the button at the bottom right.</p>
+			<p class="small">If you have any comments or feedback, please follow the link to the form by using the button at the bottom right.<br>何かのコメントやフィードバックがあれば右下隅のボタンを使ってアンケートにお答ください。</p>
 	      </div>
 	      <div class="modal-footer">
 	        <button type="button" class="btn btn-primary" data-bs-dismiss="modal" onclick="setModalPeriodBreakLengths();">OK</button>

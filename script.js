@@ -5,8 +5,8 @@ var lunchLength = 45;
 var postLunchLength = 5;
 var cleaningLength = 15;
 
-var weekdayItems = ["Homeroom - 朝礼","Period 1 - １時限","Break","Period 2 - ２時限","Break","Period 3 - ３時限","Break","Period 4 - ４時限","Lunch - 昼休み","Break - 予鈴","Period 5 - ５時限","Break","Period 6 - ６時限","Afternoon Homeroom - 終礼","Cleaning - 掃除","End of school"]
-var weekendItems = ["Homeroom - 朝礼","Period 1 - １時限","Break","Period 2 - ２時限","Break","Period 3 - ３時限","Break","Period 4 - ４時限","Afternoon Homeroom - 終礼","Cleaning - 掃除","End of school"]
+var weekdayItems = ["Homeroom - 朝礼","Period 1 - １時限","Break - 休み","Period 2 - ２時限","Break - 休み","Period 3 - ３時限","Break - 休み","Period 4 - ４時限","Lunch - 昼休み","Break - 予鈴","Period 5 - ５時限","Break - 休み","Period 6 - ６時限","Afternoon Homeroom - 終礼","Cleaning - 掃除","End of School - 終鈴"]
+var weekendItems = ["Homeroom - 朝礼","Period 1 - １時限","Break - 休み","Period 2 - ２時限","Break - 休み","Period 3 - ３時限","Break - 休み","Period 4 - ４時限","Afternoon Homeroom - 終礼","Cleaning - 掃除","End of School - 終鈴"]
 
 var schedule = [];
 var morningHomeroom;
@@ -278,9 +278,9 @@ function printSchedule() {
 				result += '<div class="row g-0 bg-white text-primary">';
 			}
 			result += '<div class="col-6"><div class="card-footer">';
-			result += '<p class="m-0">Since start: <span id="elapsedTime">00:00:00</span></p>'
+			result += '<p class="m-0">Since start 開始から<br><b><span id="elapsedTime">00:00:00</span> 分</b></p>'
 			result += '</div></div><div class="col-6"><div class="card-footer">'
-			result += '<p class="m-0">Till end: <span id="remainingTime">00:00:00</span></p>'
+			result += '<p class="m-0">Till end 終了まで<br><b><span id="remainingTime">00:00:00</span> 分</b></p>'
 			result += '</div></div></div>';
 			result += '<div class="row g-0">';
 			result += '<div class="progress" style="height: 5px;">';
