@@ -76,14 +76,12 @@ function compileSchedule(itemType, itemTime) {
     if (previousItem == undefined) {
         customSchedule.push({
             "name": itemType,
-            "length": itemTime,
             "startTime": moment({hour: 8, minute: 25}),
             "endTime": moment({hour: 8, minute: 25}).add(itemTime, 'm')
         })
     } else {
         customSchedule.push({
             "name": itemType,
-            "length": itemTime,
             "startTime": previousItem["endTime"],
             "endTime": previousItem["endTime"].clone().add(itemTime, 'm')
         })
@@ -91,7 +89,6 @@ function compileSchedule(itemType, itemTime) {
         if (itemType.includes("Lunch")) {
             customSchedule.push({
                 "name": "Break - 予鈴",
-                "length": postLunchLength,
                 "startTime": previousItem["endTime"],
                 "endTime": previousItem["endTime"].clone().add(postLunchLength, 'm')
             })
@@ -106,10 +103,21 @@ function printCustomSchedule() {
 
     for (var i = 0; i < customSchedule.length; i++) {
 		var item = customSchedule[i];
-		var result = '';
+		var result = '<button class="btn w-100 p-0 mb-1">';
 
-        result += "<p>" + item["name"] + "-" + item["length"] + "</p>";
-        result += "<p>" + item["startTime"].format('HH:mm') + "-" + item["endTime"].format('HH:mm') + "</p>";
+        if (item["name"].includes("Homeroom")) {
+            result += '<div class="card border-warning">';
+        } else if (item["name"].includes("Period")) {
+            result += '<div class="card border-success">';
+        } else {
+            result += '<div class="card border-primary">';
+        }
+
+        result += '<div class="row g-0"><div class="col-6"><div class="card-body">';
+        result += '<h2 class="m-0 fs-6 d-inline">'+ item["name"] + '</h2>';
+        result += '</div></div><div class="col-6"><div class="card-body"><p class="card-text">';
+        result += item["startTime"].format('HH:mm') + " ~ " + item["endTime"].format('HH:mm') + '</p>';
+        result += '</div></div></div></div></button>';
         totalResult += result;
     }
     customOutput.innerHTML = totalResult;
