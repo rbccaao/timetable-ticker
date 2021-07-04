@@ -1,4 +1,5 @@
 var customSchedule = [];
+var periodCounter = 1;
 var homeroomLengthValue = 20;
 var homeroomLengthName = '20 minutes 分';
 var periodLengthValues = [40, 45, 50];
@@ -14,6 +15,12 @@ var cleaningLengthName = '15 minutes 分';
 document.addEventListener('DOMContentLoaded', function () {
     customTimeDropdown();
 });
+
+function initiateCustomSchedule() {
+    customTimeDropdown();
+    document.getElementById("default-schedule").classList.add("d-none");
+    document.getElementById("custom-schedule").classList.remove("d-none");
+}
 
 function customTimeDropdown() {    
     var rawItemType = document.getElementById("customItemType");
@@ -78,20 +85,33 @@ function compileSchedule(itemType, itemTime) {
         customSchedule.push({
             "name": itemType,
             "startTime": moment({hour: 8, minute: 25}),
-            "endTime": moment({hour: 8, minute: 25}).add(itemTime, 'm')
+            "endTime": moment({hour: 8, minute: 25}).add(itemTime, 'm'),
+            "duration": itemTime
         })
     } else {
-        customSchedule.push({
-            "name": itemType,
-            "startTime": previousItem["endTime"],
-            "endTime": previousItem["endTime"].clone().add(itemTime, 'm')
-        })
+        if (itemType.includes("Period")) {
+            customSchedule.push({
+                "name": 'Period ' + periodCounter + ' - ' + getJpNum(periodCounter) + ' 時限',
+                "startTime": previousItem["endTime"],
+                "endTime": previousItem["endTime"].clone().add(itemTime, 'm'),
+                "duration": itemTime
+            })
+            periodCounter++;
+        } else {
+            customSchedule.push({
+                "name": itemType,
+                "startTime": previousItem["endTime"],
+                "endTime": previousItem["endTime"].clone().add(itemTime, 'm'),
+                "duration": itemTime
+            })
+        }
         previousItem = customSchedule[customSchedule.length-1];
         if (itemType.includes("Lunch")) {
             customSchedule.push({
                 "name": "Break - 予鈴",
                 "startTime": previousItem["endTime"],
-                "endTime": previousItem["endTime"].clone().add(postLunchLength, 'm')
+                "endTime": previousItem["endTime"].clone().add(postLunchLength, 'm'),
+                "duration": '5'
             })
         }
     }
@@ -111,7 +131,38 @@ function hideRemoveButton(item) {
 
 function removeItemFromSchedule(item) {
     customSchedule.splice(item, 1);
+    adjustedCustomSchedule = []
+    periodCounter = 1;
+    for (var i = 0; i < customSchedule.length; i++) {
+        if (customSchedule[i]["name"].includes("Period")) {
+            previousItem = customSchedule[i-1];
+            adjustedCustomSchedule.push({
+                "name": itemType + ' ' + periodCounter,
+                "startTime": previousItem["endTime"],
+                "endTime": previousItem["endTime"].clone().add(itemTime, 'm'),
+                "duration": itemTime
+            })
+        } else {
+            adjustedCustomSchedule[i] = item;
+        }
+    }
     printCustomSchedule();
+}
+
+function cancelCustomSchedule() {
+    customSchedule = [];
+    customOutput.innerHTML = "";
+    document.getElementById("default-schedule").classList.remove("d-none");
+    document.getElementById("custom-schedule").classList.add("d-none");
+}
+
+function completeCustomSchedule() {
+    customSchedule.push({
+        "name": 'End of School - 終鈴'
+    })
+    document.getElementById("default-schedule").classList.remove("d-none");
+    document.getElementById("custom-schedule").classList.add("d-none");
+    importSchedule(customSchedule);
 }
 
 function printCustomSchedule() {
@@ -122,37 +173,27 @@ function printCustomSchedule() {
     for (var i = 0; i < customSchedule.length; i++) {
 		var item = customSchedule[i];
         var result = '<div class="button-wrapper position-relative">';
-		result += '<button class="btn w-100 p-0 mb-1 custom-item"';
-        result += 'onclick="showRemoveButton(' + i + ');">';
-
         if (item["name"].includes("Homeroom")) {
-            result += '<div class="card border-warning">';
+            result += '<button class="btn btn-warning w-100 p-0 mb-1"';
         } else if (item["name"].includes("Period")) {
-            result += '<div class="card border-success">';
+            result += '<button class="btn btn-success w-100 p-0 mb-1"';
         } else {
-            result += '<div class="card border-primary">';
+            result += '<button class="btn btn-primary w-100 p-0 mb-1"'
         }
-
+        result += 'onclick="showRemoveButton(' + i + ');">';
         result += '<div class="row g-0"><div class="col-6"><div class="card-body">';
-
-        if (item["name"].includes("Period")) {
-            result += '<h2 class="m-0 fs-6 d-inline">'+ item["name"] + periodCounter + '</h2>';
-            periodCounter++;
-        }
-        else {
-            result += '<h2 class="m-0 fs-6 d-inline">'+ item["name"] + '</h2>';
-        }
-
-        result += '</div></div><div class="col-6"><div class="card-body"><p class="card-text">';
-        result += item["startTime"].format('HH:mm') + " ~ " + item["endTime"].format('HH:mm') + '</p>';
-        result += '</div></div></div></div></button>';
+        result += '<h2 class="m-0 fs-6 d-inline">'+ item["name"] + '</h2>';
+        result += '</div></div>'
+        result += '<div class="col-6"><div class="card-body"><p class="card-text">';
+        result += item["startTime"].format('HH:mm') + " ~ " + item["endTime"].format('HH:mm') + ' (' + item["duration"] + ' minutes 分)</p>';
+        result += '</div></div></div></button>';
 
         result += '<button id="custom-schedule-item-remove-' + i + '" class="btn w-100 p-0 mb-1 text-white d-none custom-item-remove"';
         result += 'onclick="removeItemFromSchedule(' + i + ');"  onfocusout="hideRemoveButton(' + i + ')">';
         result += '<div class="card bg-danger"><div class="row g-0"><div class="col"><div class="card-body">';
         result += '<i class="bi bi-x"></i></div></div></div></div></button>';
 
-        result += '</div>';        
+        result += '</div>';
         totalResult += result;
     }
     customOutput.innerHTML = totalResult;
