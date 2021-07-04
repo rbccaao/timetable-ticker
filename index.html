@@ -46,11 +46,6 @@
 		[class^="bi-"]::before, [class*=" bi-"]::before {
 			font-size: 1.2rem;
 		}
-		button.custom-item-remove {
-			position: absolute;
-			top: 0;
-			left: 0;
-		}
 	</style>
 </head>
 <body class="d-flex flex-column py-4">
@@ -66,7 +61,7 @@
 			</div>
 		</div>
 	</section>
-	<section id="default-schedule" class="container-md flex-fill justify-content-center d-none">
+	<section id="default-schedule" class="container-md flex-fill justify-content-center">
 		<div class="row justify-content-center my-3">
 			<div class="col-md-10 col-xl-6 text-center">
 				<div class="row g-0">
@@ -97,7 +92,7 @@
 			</div>
 		</div>
 	</section>
-	<section id="custom-schedule" class="container-md flex-fill justify-content-center">
+	<section id="custom-schedule" class="container-md flex-fill justify-content-center d-none">
 		<div class="row justify-content-center my-3">
 			<div class="col-md-10 col-xl-6 text-center">
 				<h3 class="h4">
@@ -152,7 +147,7 @@
 		</ul>
 	</div>
 
-	<div class="modal fade" id="initialSetupModalDISABLED" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="initialSetupModalLabel" aria-hidden="true">
+	<div class="modal fade" id="initialSetupModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="initialSetupModalLabel" aria-hidden="true">
 	  <div class="modal-dialog">
 	    <div class="modal-content">
 	      <div class="modal-header">
