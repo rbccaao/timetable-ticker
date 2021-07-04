@@ -73,6 +73,7 @@ function addItemToSchedule() {
 
 function compileSchedule(itemType, itemTime) {
     previousItem = customSchedule[customSchedule.length-1];
+    //inital item initiator
     if (previousItem == undefined) {
         customSchedule.push({
             "name": itemType,
@@ -97,13 +98,32 @@ function compileSchedule(itemType, itemTime) {
     printCustomSchedule();
 }
 
+function showRemoveButton(item) {
+    element = document.getElementById("custom-schedule-item-remove-" + item);
+    element.classList.remove("d-none");
+    element.focus();
+}
+
+function hideRemoveButton(item) {
+    element = document.getElementById("custom-schedule-item-remove-" + item);
+    element.classList.add("d-none");
+}
+
+function removeItemFromSchedule(item) {
+    customSchedule.splice(item, 1);
+    printCustomSchedule();
+}
+
 function printCustomSchedule() {
     var customOutput = document.getElementById("output-custom");
+    var periodCounter = 1;
     var totalResult = "";
 
     for (var i = 0; i < customSchedule.length; i++) {
 		var item = customSchedule[i];
-		var result = '<button class="btn w-100 p-0 mb-1">';
+        var result = '<div class="button-wrapper position-relative">';
+		result += '<button class="btn w-100 p-0 mb-1 custom-item"';
+        result += 'onclick="showRemoveButton(' + i + ');">';
 
         if (item["name"].includes("Homeroom")) {
             result += '<div class="card border-warning">';
@@ -114,10 +134,25 @@ function printCustomSchedule() {
         }
 
         result += '<div class="row g-0"><div class="col-6"><div class="card-body">';
-        result += '<h2 class="m-0 fs-6 d-inline">'+ item["name"] + '</h2>';
+
+        if (item["name"].includes("Period")) {
+            result += '<h2 class="m-0 fs-6 d-inline">'+ item["name"] + periodCounter + '</h2>';
+            periodCounter++;
+        }
+        else {
+            result += '<h2 class="m-0 fs-6 d-inline">'+ item["name"] + '</h2>';
+        }
+
         result += '</div></div><div class="col-6"><div class="card-body"><p class="card-text">';
         result += item["startTime"].format('HH:mm') + " ~ " + item["endTime"].format('HH:mm') + '</p>';
         result += '</div></div></div></div></button>';
+
+        result += '<button id="custom-schedule-item-remove-' + i + '" class="btn w-100 p-0 mb-1 text-white d-none custom-item-remove"';
+        result += 'onclick="removeItemFromSchedule(' + i + ');"  onfocusout="hideRemoveButton(' + i + ')">';
+        result += '<div class="card bg-danger"><div class="row g-0"><div class="col"><div class="card-body">';
+        result += '<i class="bi bi-x"></i></div></div></div></div></button>';
+
+        result += '</div>';        
         totalResult += result;
     }
     customOutput.innerHTML = totalResult;
