@@ -76,6 +76,7 @@ function addItemToSchedule() {
     var itemTime = rawItemTime.options[rawItemTime.selectedIndex].value;
 
     compileSchedule(itemType, itemTime);
+    window.scrollTo(0,document.body.scrollHeight);
 }
 
 function compileSchedule(itemType, itemTime) {
@@ -130,21 +131,19 @@ function hideRemoveButton(item) {
 }
 
 function removeItemFromSchedule(item) {
+    //clone schedule array with removed item
     customSchedule.splice(item, 1);
-    adjustedCustomSchedule = []
+    console.log(customSchedule);
+    customScheduleCopy = customSchedule;
+    
+    //rerun through the compiler to reassign periods
+    customSchedule = [];
     periodCounter = 1;
-    for (var i = 0; i < customSchedule.length; i++) {
-        if (customSchedule[i]["name"].includes("Period")) {
-            previousItem = customSchedule[i-1];
-            adjustedCustomSchedule.push({
-                "name": itemType + ' ' + periodCounter,
-                "startTime": previousItem["endTime"],
-                "endTime": previousItem["endTime"].clone().add(itemTime, 'm'),
-                "duration": itemTime
-            })
-        } else {
-            adjustedCustomSchedule[i] = item;
+    for (var i = 0; i < customScheduleCopy.length; i++) {
+        if (customScheduleCopy[i]["name"].includes("Break - 予鈴")) {
+            continue;
         }
+        compileSchedule(customScheduleCopy[i]["name"],customScheduleCopy[i]["duration"]);
     }
     printCustomSchedule();
 }
@@ -154,6 +153,12 @@ function cancelCustomSchedule() {
     customOutput.innerHTML = "";
     document.getElementById("default-schedule").classList.remove("d-none");
     document.getElementById("custom-schedule").classList.add("d-none");
+}
+
+function clearCustomSchedule() {
+    customSchedule = [];
+    periodCounter = 1;
+    printCustomSchedule();
 }
 
 function completeCustomSchedule() {
@@ -167,7 +172,6 @@ function completeCustomSchedule() {
 
 function printCustomSchedule() {
     var customOutput = document.getElementById("output-custom");
-    var periodCounter = 1;
     var totalResult = "";
 
     for (var i = 0; i < customSchedule.length; i++) {
