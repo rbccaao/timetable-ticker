@@ -1,5 +1,6 @@
 var customSchedule = [];
 var periodCounter = 1;
+
 var homeroomLengthValue = 20;
 var homeroomLengthName = '20 minutes 分';
 var periodLengthValues = [40, 45, 50];
@@ -20,6 +21,18 @@ function initiateCustomSchedule() {
     customTimeDropdown();
     document.getElementById("default-schedule").classList.add("d-none");
     document.getElementById("custom-schedule").classList.remove("d-none");
+    customOutput = document.getElementById("output-custom");
+
+    if (customSchedule.length == 0) {
+        resetCustomSchedule();
+    }
+}
+
+function editCustomSchedule() {
+    document.getElementById("default-schedule").classList.add("d-none");
+    document.getElementById("custom-schedule").classList.remove("d-none");
+    customSchedule.splice(-1);
+    printCustomSchedule();
 }
 
 function customTimeDropdown() {    
@@ -81,40 +94,30 @@ function addItemToSchedule() {
 
 function compileSchedule(itemType, itemTime) {
     previousItem = customSchedule[customSchedule.length-1];
-    //inital item initiator
-    if (previousItem == undefined) {
+    if (itemType.includes("Period")) {
         customSchedule.push({
-            "name": itemType,
-            "startTime": moment({hour: 8, minute: 25}),
-            "endTime": moment({hour: 8, minute: 25}).add(itemTime, 'm'),
+            "name": 'Period ' + periodCounter + ' - ' + getJpNum(periodCounter) + ' 時限',
+            "startTime": previousItem["endTime"],
+            "endTime": previousItem["endTime"].clone().add(itemTime, 'm'),
             "duration": itemTime
         })
+        periodCounter++;
     } else {
-        if (itemType.includes("Period")) {
-            customSchedule.push({
-                "name": 'Period ' + periodCounter + ' - ' + getJpNum(periodCounter) + ' 時限',
-                "startTime": previousItem["endTime"],
-                "endTime": previousItem["endTime"].clone().add(itemTime, 'm'),
-                "duration": itemTime
-            })
-            periodCounter++;
-        } else {
-            customSchedule.push({
-                "name": itemType,
-                "startTime": previousItem["endTime"],
-                "endTime": previousItem["endTime"].clone().add(itemTime, 'm'),
-                "duration": itemTime
-            })
-        }
-        previousItem = customSchedule[customSchedule.length-1];
-        if (itemType.includes("Lunch")) {
-            customSchedule.push({
-                "name": "Break - 予鈴",
-                "startTime": previousItem["endTime"],
-                "endTime": previousItem["endTime"].clone().add(postLunchLength, 'm'),
-                "duration": '5'
-            })
-        }
+        customSchedule.push({
+            "name": itemType,
+            "startTime": previousItem["endTime"],
+            "endTime": previousItem["endTime"].clone().add(itemTime, 'm'),
+            "duration": itemTime
+        })
+    }
+    previousItem = customSchedule[customSchedule.length-1];
+    if (itemType.includes("Lunch")) {
+        customSchedule.push({
+            "name": "Break - 予鈴",
+            "startTime": previousItem["endTime"],
+            "endTime": previousItem["endTime"].clone().add(postLunchLength, 'm'),
+            "duration": '5'
+        })
     }
     printCustomSchedule();
 }
@@ -137,10 +140,10 @@ function removeItemFromSchedule(item) {
     customScheduleCopy = customSchedule;
     
     //rerun through the compiler to reassign periods
-    customSchedule = [];
-    periodCounter = 1;
+    resetCustomSchedule();
     for (var i = 0; i < customScheduleCopy.length; i++) {
-        if (customScheduleCopy[i]["name"].includes("Break - 予鈴")) {
+        itemName = customScheduleCopy[i]["name"];
+        if (itemName.includes("朝礼") || itemName.includes("予鈴")) {
             continue;
         }
         compileSchedule(customScheduleCopy[i]["name"],customScheduleCopy[i]["duration"]);
@@ -153,10 +156,22 @@ function cancelCustomSchedule() {
     customOutput.innerHTML = "";
     document.getElementById("default-schedule").classList.remove("d-none");
     document.getElementById("custom-schedule").classList.add("d-none");
+    document.getElementById("custom-mode-off").classList.remove("d-none");
+    document.getElementById("custom-mode-on").classList.add("d-none");
+
+    //recreate default schedule
+    createDefaultSchedule();
+    printDefaultSchedule();
 }
 
-function clearCustomSchedule() {
+function resetCustomSchedule() {
     customSchedule = [];
+    customSchedule.push({
+        "name": 'Homeroom - 朝礼',
+        "startTime": moment({hour: 8, minute: 25}),
+        "endTime": moment({hour: 8, minute: 25}).add(homeroomLengthValue, 'm'),
+        "duration": homeroomLengthValue
+    })
     periodCounter = 1;
     printCustomSchedule();
 }
@@ -165,13 +180,10 @@ function completeCustomSchedule() {
     customSchedule.push({
         "name": 'End of School - 終鈴'
     })
-    document.getElementById("default-schedule").classList.remove("d-none");
-    document.getElementById("custom-schedule").classList.add("d-none");
-    importSchedule(customSchedule);
+    importCustomSchedule(customSchedule);
 }
 
 function printCustomSchedule() {
-    var customOutput = document.getElementById("output-custom");
     var totalResult = "";
 
     for (var i = 0; i < customSchedule.length; i++) {

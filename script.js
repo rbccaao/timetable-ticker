@@ -14,13 +14,15 @@ var morningHomeroom;
 var currentItem;
 var weekdayOrEnd;
 
+var customModeSwitch;
+
 moment.relativeTimeThreshold('m', 60*24*30*12);
 
 document.addEventListener('DOMContentLoaded', function () {
 	importPeriodBreakLengths();
 	setPeriodBreakLengths();
 	printCurrentTime();
-	printSchedule();
+	printDefaultSchedule();
 	console.log("ready!");
 });
 
@@ -34,14 +36,14 @@ setInterval(function() {
 	if (moment().isBetween(schedule[0]["startTime"], schedule[schedule.length-1]["endTime"])) {
 		// Trigger on day start. Current period/break has ended, roll into next slot. 
 		if (currentItem == null || moment().isSameOrAfter(currentItem["endTime"])) {
-			printSchedule();
+			printDefaultSchedule();
 		}
 		printCurrentProgress();
 	}
 	// Reset schedule for new day
 	if (moment().isAfter(schedule[0]["startTime"], 'day')) {
-		createSchedule();
-		printSchedule();
+		createDefaultSchedule();
+		printDefaultSchedule();
 	}
 }, 1000); 
 
@@ -95,8 +97,8 @@ function setPeriodBreakLengths() {
 	var selectBreakLength = document.getElementById("breakLength");
 	setBreakLength = selectBreakLength.options[selectBreakLength.selectedIndex].value;
 	setCookies();
-	createSchedule();
-	printSchedule();
+	createDefaultSchedule();
+	printDefaultSchedule();
 }
 
 function setModalPeriodBreakLengths() {
@@ -110,8 +112,8 @@ function setModalPeriodBreakLengths() {
     document.getElementById("breakLength").value = setBreakLength;
 
 	setCookies();
-	createSchedule();
-	printSchedule();
+	createDefaultSchedule();
+	printDefaultSchedule();
 }
 
 function printCurrentTime() {
@@ -125,7 +127,7 @@ function printCurrentTime() {
 	currentTime.innerHTML = moment().format('HH:mm:ss');
 }
 
-function createSchedule() {
+function createDefaultSchedule() {
 	if (weekdayOrEnd === "weekday") {
 		var dayItems = weekdayItems;
 	} else {
@@ -191,14 +193,19 @@ function createSchedule() {
 	}
 }
 
-function importSchedule(customSchedule) {
-	console.log("importing schedule");
+function importCustomSchedule(customSchedule) {
+    document.getElementById("default-schedule").classList.remove("d-none");
+    document.getElementById("custom-schedule").classList.add("d-none");
+    document.getElementById("custom-mode-off").classList.add("d-none");
+    document.getElementById("custom-mode-on").classList.remove("d-none");
+
 	schedule = customSchedule;
-	printSchedule();
+	customModeSwitch = true;
+	printDefaultSchedule();
 	printCurrentProgress();
 }
 
-function printSchedule() {
+function printDefaultSchedule() {
 	var output = document.getElementById("output");
 	output.innerHTML = "";
 

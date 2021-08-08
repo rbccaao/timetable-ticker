@@ -47,6 +47,15 @@ function getJpNum(i) {
 		case 6:
 		jp = "６";
 		break;
+		case 7:
+		jp = "７";
+		break;
+		case 8:
+		jp = "８";
+		break;
+		case 9:
+		jp = "９";
+		break;
 	}
 	return jp;
 }
