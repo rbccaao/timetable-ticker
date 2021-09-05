@@ -23,7 +23,7 @@ moment.relativeTimeThreshold('m', 60*24*30*12);
 document.addEventListener('DOMContentLoaded', function () {
 	importFromCookies();
 	setPeriodBreakLengths();
-	setoptions();
+	setOptions();
 	printCurrentTime();
 	printDefaultSchedule();
 	console.log("ready!");
