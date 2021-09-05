@@ -21,8 +21,9 @@ var customModeSwitch;
 moment.relativeTimeThreshold('m', 60*24*30*12);
 
 document.addEventListener('DOMContentLoaded', function () {
-	importPeriodBreakLengths();
+	importFromCookies();
 	setPeriodBreakLengths();
+	setScheduleOptions();
 	printCurrentTime();
 	printDefaultSchedule();
 	console.log("ready!");
@@ -213,7 +214,8 @@ function createDefaultSchedule() {
 }
 
 function importCustomSchedule(customSchedule) {
-    document.getElementById("default-schedule").classList.remove("d-none");
+    document.getElementById("timetable-header").classList.remove("d-none");
+    document.getElementById("timetable").classList.remove("d-none");
     document.getElementById("custom-schedule").classList.add("d-none");
     document.getElementById("custom-mode-off").classList.add("d-none");
     document.getElementById("custom-mode-on").classList.remove("d-none");

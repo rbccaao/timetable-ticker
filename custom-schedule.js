@@ -19,7 +19,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
 function initiateCustomSchedule() {
     customTimeDropdown();
-    document.getElementById("default-schedule").classList.add("d-none");
+    document.getElementById("timetable-header").classList.add("d-none");
+    document.getElementById("timetable").classList.add("d-none");
     document.getElementById("custom-schedule").classList.remove("d-none");
     customOutput = document.getElementById("output-custom");
 
@@ -29,7 +30,8 @@ function initiateCustomSchedule() {
 }
 
 function editCustomSchedule() {
-    document.getElementById("default-schedule").classList.add("d-none");
+    document.getElementById("timetable-header").classList.add("d-none");
+    document.getElementById("timetable").classList.add("d-none");
     document.getElementById("custom-schedule").classList.remove("d-none");
     customSchedule.splice(-1);
     printCustomSchedule();
@@ -154,7 +156,8 @@ function removeItemFromSchedule(item) {
 function cancelCustomSchedule() {
     customSchedule = [];
     customOutput.innerHTML = "";
-    document.getElementById("default-schedule").classList.remove("d-none");
+    document.getElementById("timetable-header").classList.remove("d-none");
+    document.getElementById("timetable").classList.remove("d-none");
     document.getElementById("custom-schedule").classList.add("d-none");
     document.getElementById("custom-mode-off").classList.remove("d-none");
     document.getElementById("custom-mode-on").classList.add("d-none");
