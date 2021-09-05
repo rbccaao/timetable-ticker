@@ -91,6 +91,8 @@ function importFromCookies() {
 
 	    document.getElementById("periodLength").value = setPeriodLength;
 	    document.getElementById("breakLength").value = setBreakLength;
+		document.getElementById("scheduleOptionLunch").checked = scheduleOptionLunch;
+		document.getElementById("scheduleOptionCleaning").checked = scheduleOptionCleaning;
 	} else {
 		var initialSetupModal = new bootstrap.Modal(document.getElementById("initialSetupModal"));
 		initialSetupModal.show();
