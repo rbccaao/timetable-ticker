@@ -4,6 +4,8 @@ var homeroomLength = 20;
 var lunchLength = 45;
 var postLunchLength = 5;
 var cleaningLength = 15;
+var scheduleOptionLunch;
+var scheduleOptionCleaning;
 
 var weekdayItems = ["Homeroom - 朝礼","Period 1 - １時限","Break - 休み","Period 2 - ２時限","Break - 休み","Period 3 - ３時限","Break - 休み","Period 4 - ４時限","Lunch - 昼休み","Break - 予鈴","Period 5 - ５時限","Break - 休み","Period 6 - ６時限","Afternoon Homeroom - 終礼","Cleaning - 掃除","End of School - 終鈴"]
 var weekendItems = ["Homeroom - 朝礼","Period 1 - １時限","Break - 休み","Period 2 - ２時限","Break - 休み","Period 3 - ３時限","Break - 休み","Period 4 - ４時限","Afternoon Homeroom - 終礼","Cleaning - 掃除","End of School - 終鈴"]
@@ -53,6 +55,8 @@ function setCookies() {
 
 	document.cookie = "setPeriodLength=" + setPeriodLength + "; expires=" + expiryDate;
 	document.cookie = "setBreakLength=" + setBreakLength + "; expires=" + expiryDate;
+	document.cookie = "scheduleOptionLunch=" + scheduleOptionLunch + "; expires=" + expiryDate;
+	document.cookie = "scheduleOptionCleaning=" + scheduleOptionCleaning + "; expires=" + expiryDate;
 }
 
 function getCookie(cname) {
@@ -71,7 +75,7 @@ function getCookie(cname) {
 	return "";
 }
 
-function importPeriodBreakLengths() {
+function importFromCookies() {
 	if (moment().days() > 0 && moment().days() < 6) {
 		weekdayOrEnd = 'weekday';
 	} else {
@@ -81,6 +85,8 @@ function importPeriodBreakLengths() {
 	if (document.cookie) {
 		setPeriodLength = getCookie("setPeriodLength");
 		setBreakLength = getCookie("setBreakLength");
+		scheduleOptionLunch = getCookie("scheduleOptionLunch");
+		scheduleOptionCleaning = getCookie("scheduleOptionCleaning");
 
 	    document.getElementById("periodLength").value = setPeriodLength;
 	    document.getElementById("breakLength").value = setBreakLength;
@@ -96,6 +102,15 @@ function setPeriodBreakLengths() {
 
 	var selectBreakLength = document.getElementById("breakLength");
 	setBreakLength = selectBreakLength.options[selectBreakLength.selectedIndex].value;
+	setCookies();
+	createDefaultSchedule();
+	printDefaultSchedule();
+}
+
+function setScheduleOptions() {
+	scheduleOptionLunch = document.getElementById("option-lunch").checked;
+	scheduleOptionCleaning = document.getElementById("option-cleaning").checked;
+
 	setCookies();
 	createDefaultSchedule();
 	printDefaultSchedule();
@@ -143,29 +158,30 @@ function createDefaultSchedule() {
 		"endTime": morningHomeroom.clone().add(homeroomLength, 'm'),
 	})
 
+	var j = 1;
 	for (var i = 1; i < dayItems.length; i++) {
-		previousItem = schedule[i-1];
+		previousItem = schedule[j-1];
 
 		if (dayItems[i].includes("Period")) {
-			schedule[i] = {
+			schedule[j] = {
 				"name": dayItems[i],
 				"startTime": previousItem["endTime"],
 				"endTime": previousItem["endTime"].clone().add(setPeriodLength, 'm')
 			}
 		} else if (dayItems[i].includes("Break")) {
-			schedule[i] = {
+			schedule[j] = {
 				"name": dayItems[i],
 				"startTime": previousItem["endTime"],
 				"endTime": previousItem["endTime"].clone().add(setBreakLength, 'm')
 			}
 		} else if (dayItems[i].includes("Homeroom")) {
-			schedule[i] = {
+			schedule[j] = {
 				"name": dayItems[i],
 				"startTime": previousItem["endTime"],
 				"endTime": previousItem["endTime"].clone().add(homeroomLength, 'm')
 			}
-		} else if(dayItems[i].includes("Lunch")) {
-			schedule[i] = {
+		} else if(dayItems[i].includes("Lunch") && scheduleOptionLunch) {
+			schedule[j] = {
 				"name": dayItems[i],
 				"startTime": previousItem["endTime"],
 				"endTime": previousItem["endTime"].clone().add(lunchLength, 'm')
@@ -177,19 +193,22 @@ function createDefaultSchedule() {
 				"endTime": schedule[i]["endTime"].clone().add(postLunchLength, 'm')
 			}
 			i++;
-		} else if (dayItems[i].includes("Cleaning")) {
-			schedule[i] = {
+		} else if (dayItems[i].includes("Cleaning") && scheduleOptionCleaning) {
+			schedule[j] = {
 				"name": dayItems[i],
 				"startTime": previousItem["endTime"],
 				"endTime": previousItem["endTime"].clone().add(cleaningLength, 'm')
 			}
 		} else if (dayItems[i].includes("End")) {
-			schedule[i] = {
+			schedule[j] = {
 				"name": dayItems[i],
 				"startTime": previousItem["endTime"],
 				"endTime": previousItem["endTime"].clone().add(10, 'm')
 			}
+		} else {
+			j--;
 		}
+		j++;
 	}
 }
 
