@@ -16,8 +16,6 @@ var morningHomeroom;
 var currentItem;
 var weekdayOrEnd;
 
-var customModeSwitch;
-
 moment.relativeTimeThreshold('m', 60*24*30*12);
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -213,19 +211,6 @@ function createDefaultSchedule() {
 		}
 		j++;
 	}
-}
-
-function importCustomSchedule(customSchedule) {
-    document.getElementById("timetable-header").classList.remove("d-none");
-    document.getElementById("timetable").classList.remove("d-none");
-    document.getElementById("custom-schedule").classList.add("d-none");
-    document.getElementById("custom-mode-off").classList.add("d-none");
-    document.getElementById("custom-mode-on").classList.remove("d-none");
-
-	schedule = customSchedule;
-	customModeSwitch = true;
-	printDefaultSchedule();
-	printCurrentProgress();
 }
 
 function printDefaultSchedule() {
