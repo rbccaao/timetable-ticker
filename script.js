@@ -4,8 +4,8 @@ var homeroomLength = 20;
 var lunchLength = 45;
 var postLunchLength = 5;
 var cleaningLength = 15;
-var scheduleOptionLunch;
-var scheduleOptionCleaning;
+var optionLunch;
+var optionCleaning;
 
 var weekdayItems = ["Homeroom - 朝礼","Period 1 - １時限","Break - 休み","Period 2 - ２時限","Break - 休み","Period 3 - ３時限","Break - 休み","Period 4 - ４時限","Lunch - 昼休み","Break - 予鈴","Period 5 - ５時限","Break - 休み","Period 6 - ６時限","Afternoon Homeroom - 終礼","Cleaning - 掃除","End of School - 終鈴"]
 var weekendItems = ["Homeroom - 朝礼","Period 1 - １時限","Break - 休み","Period 2 - ２時限","Break - 休み","Period 3 - ３時限","Break - 休み","Period 4 - ４時限","Afternoon Homeroom - 終礼","Cleaning - 掃除","End of School - 終鈴"]
@@ -23,7 +23,7 @@ moment.relativeTimeThreshold('m', 60*24*30*12);
 document.addEventListener('DOMContentLoaded', function () {
 	importFromCookies();
 	setPeriodBreakLengths();
-	setScheduleOptions();
+	setoptions();
 	printCurrentTime();
 	printDefaultSchedule();
 	console.log("ready!");
@@ -56,8 +56,8 @@ function setCookies() {
 
 	document.cookie = "setPeriodLength=" + setPeriodLength + "; expires=" + expiryDate;
 	document.cookie = "setBreakLength=" + setBreakLength + "; expires=" + expiryDate;
-	document.cookie = "scheduleOptionLunch=" + scheduleOptionLunch + "; expires=" + expiryDate;
-	document.cookie = "scheduleOptionCleaning=" + scheduleOptionCleaning + "; expires=" + expiryDate;
+	document.cookie = "optionLunch=" + optionLunch + "; expires=" + expiryDate;
+	document.cookie = "optionCleaning=" + optionCleaning + "; expires=" + expiryDate;
 }
 
 function getCookie(cname) {
@@ -86,13 +86,13 @@ function importFromCookies() {
 	if (document.cookie) {
 		setPeriodLength = getCookie("setPeriodLength");
 		setBreakLength = getCookie("setBreakLength");
-		scheduleOptionLunch = getCookie("scheduleOptionLunch");
-		scheduleOptionCleaning = getCookie("scheduleOptionCleaning");
+		optionLunch = getCookie("optionLunch");
+		optionCleaning = getCookie("optionCleaning");
 
 	    document.getElementById("periodLength").value = setPeriodLength;
 	    document.getElementById("breakLength").value = setBreakLength;
-		document.getElementById("scheduleOptionLunch").checked = scheduleOptionLunch;
-		document.getElementById("scheduleOptionCleaning").checked = scheduleOptionCleaning;
+		document.getElementById("optionLunch").checked = optionLunch;
+		document.getElementById("optionCleaning").checked = optionCleaning;
 	} else {
 		var initialSetupModal = new bootstrap.Modal(document.getElementById("initialSetupModal"));
 		initialSetupModal.show();
@@ -110,9 +110,9 @@ function setPeriodBreakLengths() {
 	printDefaultSchedule();
 }
 
-function setScheduleOptions() {
-	scheduleOptionLunch = document.getElementById("option-lunch").checked;
-	scheduleOptionCleaning = document.getElementById("option-cleaning").checked;
+function setoptions() {
+	optionLunch = document.getElementById("option-lunch").checked;
+	optionCleaning = document.getElementById("option-cleaning").checked;
 
 	setCookies();
 	createDefaultSchedule();
@@ -183,7 +183,7 @@ function createDefaultSchedule() {
 				"startTime": previousItem["endTime"],
 				"endTime": previousItem["endTime"].clone().add(homeroomLength, 'm')
 			}
-		} else if(dayItems[i].includes("Lunch") && scheduleOptionLunch) {
+		} else if(dayItems[i].includes("Lunch") && optionLunch) {
 			schedule[j] = {
 				"name": dayItems[i],
 				"startTime": previousItem["endTime"],
@@ -196,7 +196,7 @@ function createDefaultSchedule() {
 				"endTime": schedule[i]["endTime"].clone().add(postLunchLength, 'm')
 			}
 			i++;
-		} else if (dayItems[i].includes("Cleaning") && scheduleOptionCleaning) {
+		} else if (dayItems[i].includes("Cleaning") && optionCleaning) {
 			schedule[j] = {
 				"name": dayItems[i],
 				"startTime": previousItem["endTime"],
