@@ -110,7 +110,7 @@ function setPeriodBreakLengths() {
 	printDefaultSchedule();
 }
 
-function setoptions() {
+function setOptions() {
 	optionLunch = document.getElementById("optionLunch").checked;
 	optionCleaning = document.getElementById("optionCleaning").checked;
 
