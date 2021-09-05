@@ -3,8 +3,8 @@ var periodCounter = 1;
 
 var homeroomLengthValue = 20;
 var homeroomLengthName = '20 minutes 分';
-var periodLengthValues = [40, 45, 50];
-var periodLengthNames = ['40 minutes 分', '45 minutes 分', '50 minutes 分'];
+var periodLengthValues = [30, 40, 45, 50];
+var periodLengthNames = ['30 minutes 分', '40 minutes 分', '45 minutes 分', '50 minutes 分'];
 var breakLengthValues = [10, 15];
 var breakLengthNames = ['10 minutes 分', '15 minutes 分'];
 var lunchLengthValues = [35, 40, 45];
