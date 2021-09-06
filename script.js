@@ -1,5 +1,5 @@
-var setPeriodLength = 0;
-var setBreakLength = 0;
+var setPeriodLength = 50;
+var setBreakLength = 10;
 var homeroomLength = 20;
 var lunchLength = 45;
 var postLunchLength = 5;
@@ -20,8 +20,7 @@ moment.relativeTimeThreshold('m', 60*24*30*12);
 
 document.addEventListener('DOMContentLoaded', function () {
 	importFromCookies();
-	setPeriodBreakLengths();
-	setOptions();
+	createDefaultSchedule();
 	printCurrentTime();
 	printDefaultSchedule();
 	console.log("ready!");
