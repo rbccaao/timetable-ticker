@@ -74,6 +74,7 @@ function getCookie(cname) {
 }
 
 function importFromCookies() {
+	console.log("here comes the cookie monster" + document.cookie);
 	if (moment().days() > 0 && moment().days() < 6) {
 		weekdayOrEnd = 'weekday';
 	} else {
