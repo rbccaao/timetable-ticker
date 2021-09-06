@@ -67,14 +67,17 @@ function getCookie(cname) {
 			c = c.substring(1);
 		}
 		if (c.indexOf(name) == 0) {
-			return c.substring(name.length, c.length);
+			var data = c.substring(name.length, c.length);
+			if (name.includes("option")) {
+				data = data === 'true';
+			}
+			return data;
 		}
 	}
 	return "";
 }
 
 function importFromCookies() {
-	console.log("here comes the cookie monster" + document.cookie);
 	if (moment().days() > 0 && moment().days() < 6) {
 		weekdayOrEnd = 'weekday';
 	} else {
