@@ -16,8 +16,6 @@ var morningHomeroom;
 var currentItem;
 var weekdayOrEnd;
 
-var customModeSwitch;
-
 moment.relativeTimeThreshold('m', 60*24*30*12);
 
 document.addEventListener('DOMContentLoaded', function () {
