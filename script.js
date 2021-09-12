@@ -4,8 +4,8 @@ var homeroomLength = 20;
 var lunchLength = 45;
 var postLunchLength = 5;
 var cleaningLength = 15;
-var optionLunch;
-var optionCleaning;
+var optionLunch = true;
+var optionCleaning = true;
 
 var weekdayItems = ["Homeroom - 朝礼","Period 1 - １時限","Break - 休み","Period 2 - ２時限","Break - 休み","Period 3 - ３時限","Break - 休み","Period 4 - ４時限","Lunch - 昼休み","Break - 予鈴","Period 5 - ５時限","Break - 休み","Period 6 - ６時限","Afternoon Homeroom - 終礼","Cleaning - 掃除","End of School - 終鈴"]
 var weekendItems = ["Homeroom - 朝礼","Period 1 - １時限","Break - 休み","Period 2 - ２時限","Break - 休み","Period 3 - ３時限","Break - 休み","Period 4 - ４時限","Afternoon Homeroom - 終礼","Cleaning - 掃除","End of School - 終鈴"]
@@ -197,6 +197,7 @@ function createDefaultSchedule() {
 				"endTime": schedule[i]["endTime"].clone().add(postLunchLength, 'm')
 			}
 			i++;
+			j++;
 		} else if (dayItems[i].includes("Cleaning") && optionCleaning) {
 			schedule[j] = {
 				"name": dayItems[i],
